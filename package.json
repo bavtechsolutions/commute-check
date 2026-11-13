@@ -1,0 +1,13 @@
+{
+  "name": "commute-check",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "test": "node --test",
+    "probe:metoffice": "node --env-file=.env.local scripts/probe-metoffice.mjs",
+    "probe:darwin": "node --env-file=.env.local scripts/probe-darwin.mjs"
+  }
+}
