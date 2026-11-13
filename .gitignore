@@ -1,0 +1,10 @@
+# Secrets: only .env.example is ever committed
+.env
+.env.*
+!.env.example
+
+# Raw API responses captured by the probe scripts
+probe-output/
+
+node_modules/
+.vercel/
