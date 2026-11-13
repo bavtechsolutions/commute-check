@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test Scenarios</title>
+  <meta name="description" content="Simulated scenarios for Commute Check: cancellations, delays, replacement buses and API outages.">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main>
+  <div class="banner sim">SIMULATED DATA. Nothing on this page is live.</div>
+  <h1>Test scenarios</h1>
+  <p class="lede">The cases that are hard to catch live. Each one runs the same code as the live check, with recorded or synthetic API responses and a fixed clock.
+    Train data comes from a real Bolton → Oxford Road board (13 Nov 2026, 21:07), modified per scenario. Weather is synthetic.
+    <a href="/">Back to the live check</a></p>
+
+  <div class="card"><div class="scenarios" id="list"></div></div>
+  <div id="result" aria-live="polite"></div>
+
+  <footer>Simulated weather uses the Met Office response format with invented values. Train data structure from National Rail Enquiries (Darwin).</footer>
+</main>
+<script type="module">
+  import { renderResult, getJSON } from "/render.js";
+
+  const list = document.getElementById("list");
+  const out = document.getElementById("result");
+  const { scenarios } = await getJSON("/api/demo");
+
+  list.innerHTML = scenarios.map((s) =>
+    `<button class="secondary" data-id="${s.id}" aria-pressed="false">${s.title.replace(/</g, "&lt;")}</button>`).join("");
+
+  async function show(id) {
+    for (const b of list.querySelectorAll("button")) b.setAttribute("aria-pressed", String(b.dataset.id === id));
+    history.replaceState(null, "", `?scenario=${encodeURIComponent(id)}`);
+    try {
+      out.innerHTML = renderResult(await getJSON(`/api/demo?scenario=${encodeURIComponent(id)}`));
+    } catch (e) {
+      out.innerHTML = `<p class="error">${e.message.replace(/</g, "&lt;")}</p>`;
+    }
+  }
+
+  list.addEventListener("click", (e) => { const id = e.target.closest("button")?.dataset.id; if (id) show(id); });
+  show(new URLSearchParams(location.search).get("scenario") ?? scenarios[0].id);
+</script>
+</body>
+</html>

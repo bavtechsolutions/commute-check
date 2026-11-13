@@ -100,6 +100,7 @@ test("cancelled train", async () => {
   const r = await checkCommute({ ...base, depart: "21:21", arrive: "21:41", now: new Date("2026-11-13T21:07:00Z"), clients: clients({ board, forecast: forecastFrom("2026-11-13T20:00:00Z") }) });
   assert.equal(r.train.status, "cancelled");
   assert.match(r.train.reason, /fault on this train/);
+  assert.match(r.notes[0], /won't get you to Manchester Oxford Road/);
 });
 
 test("journey over midnight: arrival is the next day", async () => {

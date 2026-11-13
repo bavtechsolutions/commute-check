@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Commute Check</title>
+  <meta name="description" content="Check your usual train and the weather at both ends, using National Rail's live departures and the Met Office forecast.">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main>
+  <h1>Commute Check</h1>
+  <p class="lede">Your usual train, plus the weather where you leave and where you arrive. Live train information appears from 2 hours before departure. Before that, you get the forecast for the times you saved. <a href="/scenarios.html">Try test scenarios</a></p>
+
+  <form class="journey card" id="journey">
+    <label>From <input name="from" list="stations" required autocomplete="off" placeholder="Bolton (BON)"></label>
+    <label>To <input name="to" list="stations" required autocomplete="off" placeholder="Manchester Oxford Road (MCO)"></label>
+    <label>Usual departure <input name="depart" type="time" required value="07:22"></label>
+    <label>Usual arrival <input name="arrive" type="time" required value="07:45"></label>
+    <button type="submit">Check my commute</button>
+  </form>
+  <datalist id="stations"></datalist>
+
+  <div id="result" aria-live="polite"></div>
+
+  <footer>
+    Powered by Met Office data. Train information from National Rail Enquiries (Darwin).
+    Station locations from NaPTAN (OGL). Not for safety-critical use.
+  </footer>
+</main>
+<script type="module">
+  import { renderResult, getJSON } from "/render.js";
+
+  const form = document.getElementById("journey");
+  const out = document.getElementById("result");
+  const stations = await (await fetch("/stations.json")).json();
+  const label = (crs) => `${stations[crs].name} (${crs})`;
+  document.getElementById("stations").innerHTML =
+    Object.keys(stations).map((crs) => `<option value="${label(crs).replace(/"/g, "&quot;")}">`).join("");
+
+  // Accept "Bolton (BON)", "BON" or an exact station name.
+  const toCrs = (v) => {
+    const code = (/\(([A-Z]{3})\)\s*$/.exec(v)?.[1] ?? v).trim().toUpperCase();
+    if (stations[code]) return code;
+    return Object.keys(stations).find((c) => stations[c].name.toLowerCase() === v.trim().toLowerCase()) ?? null;
+  };
+
+  function load() {
+    const q = new URLSearchParams(location.search);
+    let saved = null;
+    try { saved = JSON.parse(localStorage.getItem("commute") ?? "null"); } catch {}
+    const j = q.has("from") ? Object.fromEntries(q) : saved;
+    if (!j) return false;
+    if (stations[j.from]) form.from.value = label(j.from);
+    if (stations[j.to]) form.to.value = label(j.to);
+    if (j.depart) form.depart.value = j.depart;
+    if (j.arrive) form.arrive.value = j.arrive;
+    return Boolean(stations[j.from] && stations[j.to]);
+  }
+
+  async function check() {
+    const from = toCrs(form.from.value), to = toCrs(form.to.value);
+    if (!from || !to) { out.innerHTML = `<p class="error">Pick stations from the list.</p>`; return; }
+    const j = { from, to, depart: form.depart.value, arrive: form.arrive.value };
+    try { localStorage.setItem("commute", JSON.stringify(j)); } catch {}
+    history.replaceState(null, "", `?${new URLSearchParams(j)}`);
+    out.innerHTML = `<p class="muted">Checking…</p>`;
+    try {
+      out.innerHTML = renderResult(await getJSON(`/api/commute?${new URLSearchParams(j)}`));
+    } catch (e) {
+      out.innerHTML = `<p class="error">${e.message.replace(/</g, "&lt;")}</p>`;
+    }
+  }
+
+  form.addEventListener("submit", (e) => { e.preventDefault(); check(); });
+  if (load()) check();
+</script>
+</body>
+</html>
