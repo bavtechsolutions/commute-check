@@ -1,0 +1,383 @@
+{
+  "trainServices": [
+    {
+      "subsequentCallingPoints": [
+        {
+          "callingPoint": [
+            {
+              "locationName": "Manchester Piccadilly",
+              "crs": "MAN",
+              "st": "20:29",
+              "et": "21:03",
+              "isCancelled": false,
+              "length": 0,
+              "detachFront": false,
+              "affectedByDiversion": false,
+              "rerouteDelay": 0
+            }
+          ],
+          "serviceType": "train",
+          "serviceChangeRequired": false,
+          "assocIsCancelled": false
+        }
+      ],
+      "futureCancellation": false,
+      "futureDelay": false,
+      "origin": [
+        {
+          "locationName": "Brockenhurst",
+          "crs": "BCU",
+          "assocIsCancelled": false
+        }
+      ],
+      "destination": [
+        {
+          "locationName": "Manchester Piccadilly",
+          "crs": "MAN",
+          "assocIsCancelled": false
+        }
+      ],
+      "rsid": "XC326000",
+      "std": "20:19",
+      "etd": "20:55",
+      "platform": "3",
+      "operator": "CrossCountry",
+      "operatorCode": "XC",
+      "isCircularRoute": false,
+      "isCancelled": false,
+      "filterLocationCancelled": false,
+      "serviceType": "train",
+      "length": 0,
+      "detachFront": false,
+      "isReverseFormation": false,
+      "serviceID": "10662002STKP____"
+    },
+    {
+      "subsequentCallingPoints": [
+        {
+          "callingPoint": [
+            {
+              "locationName": "Heaton Chapel",
+              "crs": "HTC",
+              "st": "20:52",
+              "et": "20:55",
+              "isCancelled": false,
+              "length": 4,
+              "detachFront": false,
+              "affectedByDiversion": false,
+              "rerouteDelay": 0
+            },
+            {
+              "locationName": "Levenshulme",
+              "crs": "LVM",
+              "st": "20:55",
+              "et": "20:58",
+              "isCancelled": false,
+              "length": 4,
+              "detachFront": false,
+              "affectedByDiversion": false,
+              "rerouteDelay": 0
+            },
+            {
+              "locationName": "Manchester Piccadilly",
+              "crs": "MAN",
+              "st": "21:02",
+              "et": "21:05",
+              "isCancelled": false,
+              "length": 4,
+              "detachFront": false,
+              "affectedByDiversion": false,
+              "rerouteDelay": 0
+            }
+          ],
+          "serviceType": "train",
+          "serviceChangeRequired": false,
+          "assocIsCancelled": false
+        }
+      ],
+      "futureCancellation": false,
+      "futureDelay": false,
+      "origin": [
+        {
+          "locationName": "Alderley Edge",
+          "crs": "ALD",
+          "assocIsCancelled": false
+        }
+      ],
+      "destination": [
+        {
+          "locationName": "Manchester Piccadilly",
+          "crs": "MAN",
+          "assocIsCancelled": false
+        }
+      ],
+      "rsid": "NT842800",
+      "std": "20:49",
+      "etd": "20:52",
+      "platform": "4",
+      "operator": "Northern",
+      "operatorCode": "NT",
+      "isCircularRoute": false,
+      "isCancelled": false,
+      "filterLocationCancelled": false,
+      "serviceType": "train",
+      "length": 4,
+      "detachFront": false,
+      "isReverseFormation": false,
+      "serviceID": "10672388STKP____"
+    },
+    {
+      "subsequentCallingPoints": [
+        {
+          "callingPoint": [
+            {
+              "locationName": "Manchester Piccadilly",
+              "crs": "MAN",
+              "st": "21:05",
+              "et": "On time",
+              "isCancelled": false,
+              "length": 6,
+              "detachFront": false,
+              "affectedByDiversion": false,
+              "rerouteDelay": 0
+            },
+            {
+              "locationName": "Manchester Oxford Road",
+              "crs": "MCO",
+              "st": "21:09",
+              "et": "On time",
+              "isCancelled": false,
+              "length": 6,
+              "detachFront": false,
+              "affectedByDiversion": false,
+              "rerouteDelay": 0
+            },
+            {
+              "locationName": "Urmston",
+              "crs": "URM",
+              "st": "21:18",
+              "et": "On time",
+              "isCancelled": false,
+              "length": 6,
+              "detachFront": false,
+              "affectedByDiversion": false,
+              "rerouteDelay": 0
+            },
+            {
+              "locationName": "Irlam",
+              "crs": "IRL",
+              "st": "21:23",
+              "et": "On time",
+              "isCancelled": false,
+              "length": 6,
+              "detachFront": false,
+              "affectedByDiversion": false,
+              "rerouteDelay": 0
+            },
+            {
+              "locationName": "Birchwood",
+              "crs": "BWD",
+              "st": "21:29",
+              "et": "On time",
+              "isCancelled": false,
+              "length": 6,
+              "detachFront": false,
+              "affectedByDiversion": false,
+              "rerouteDelay": 0
+            },
+            {
+              "locationName": "Warrington Central",
+              "crs": "WAC",
+              "st": "21:35",
+              "et": "On time",
+              "isCancelled": false,
+              "length": 6,
+              "detachFront": false,
+              "affectedByDiversion": false,
+              "rerouteDelay": 0
+            },
+            {
+              "locationName": "Liverpool South Parkway",
+              "crs": "LPY",
+              "st": "21:49",
+              "et": "On time",
+              "isCancelled": false,
+              "length": 6,
+              "detachFront": false,
+              "affectedByDiversion": false,
+              "rerouteDelay": 0
+            },
+            {
+              "locationName": "Liverpool Lime Street",
+              "crs": "LIV",
+              "st": "22:00",
+              "et": "On time",
+              "isCancelled": false,
+              "length": 6,
+              "detachFront": false,
+              "affectedByDiversion": false,
+              "rerouteDelay": 0
+            }
+          ],
+          "serviceType": "train",
+          "serviceChangeRequired": false,
+          "assocIsCancelled": false
+        }
+      ],
+      "futureCancellation": false,
+      "futureDelay": false,
+      "origin": [
+        {
+          "locationName": "Cleethorpes",
+          "crs": "CLE",
+          "assocIsCancelled": false
+        }
+      ],
+      "destination": [
+        {
+          "locationName": "Liverpool Lime Street",
+          "crs": "LIV",
+          "assocIsCancelled": false
+        }
+      ],
+      "rsid": "TP606500",
+      "std": "20:54",
+      "etd": "On time",
+      "platform": "3",
+      "operator": "TransPennine Express",
+      "operatorCode": "TP",
+      "isCircularRoute": false,
+      "isCancelled": false,
+      "filterLocationCancelled": false,
+      "serviceType": "train",
+      "length": 6,
+      "detachFront": false,
+      "isReverseFormation": false,
+      "serviceID": "10683331STKP____"
+    },
+    {
+      "subsequentCallingPoints": [
+        {
+          "callingPoint": [
+            {
+              "locationName": "Manchester Piccadilly",
+              "crs": "MAN",
+              "st": "21:05",
+              "et": "21:16",
+              "isCancelled": false,
+              "length": 9,
+              "detachFront": false,
+              "delayReason": "This service has been delayed by a late running train being in front of this one",
+              "affectedByDiversion": false,
+              "rerouteDelay": 0
+            }
+          ],
+          "serviceType": "train",
+          "serviceChangeRequired": false,
+          "assocIsCancelled": false
+        }
+      ],
+      "futureCancellation": false,
+      "futureDelay": false,
+      "origin": [
+        {
+          "locationName": "London Euston",
+          "crs": "EUS",
+          "assocIsCancelled": false
+        }
+      ],
+      "destination": [
+        {
+          "locationName": "Manchester Piccadilly",
+          "crs": "MAN",
+          "assocIsCancelled": false
+        }
+      ],
+      "rsid": "VT720000",
+      "std": "20:57",
+      "etd": "21:08",
+      "platform": "3",
+      "operator": "Avanti West Coast",
+      "operatorCode": "VT",
+      "isCircularRoute": false,
+      "isCancelled": false,
+      "filterLocationCancelled": false,
+      "serviceType": "train",
+      "length": 9,
+      "detachFront": false,
+      "isReverseFormation": false,
+      "delayReason": "This service has been delayed by a late running train being in front of this one",
+      "serviceID": "10680360STKP____"
+    },
+    {
+      "subsequentCallingPoints": [
+        {
+          "callingPoint": [
+            {
+              "locationName": "Manchester Piccadilly",
+              "crs": "MAN",
+              "st": "21:13",
+              "et": "21:22",
+              "isCancelled": false,
+              "length": 3,
+              "detachFront": false,
+              "delayReason": "This service has been delayed by waiting for a part of the train to be attached",
+              "affectedByDiversion": false,
+              "rerouteDelay": 0
+            }
+          ],
+          "serviceType": "train",
+          "serviceChangeRequired": false,
+          "assocIsCancelled": false
+        }
+      ],
+      "futureCancellation": false,
+      "futureDelay": false,
+      "origin": [
+        {
+          "locationName": "Milford Haven",
+          "crs": "MFH",
+          "assocIsCancelled": false
+        }
+      ],
+      "destination": [
+        {
+          "locationName": "Manchester Piccadilly",
+          "crs": "MAN",
+          "assocIsCancelled": false
+        }
+      ],
+      "rsid": "AW102600",
+      "std": "21:01",
+      "etd": "21:13",
+      "platform": "3",
+      "operator": "Transport for Wales",
+      "operatorCode": "AW",
+      "isCircularRoute": false,
+      "isCancelled": false,
+      "filterLocationCancelled": false,
+      "serviceType": "train",
+      "length": 3,
+      "detachFront": false,
+      "isReverseFormation": false,
+      "delayReason": "This service has been delayed by waiting for a part of the train to be attached",
+      "serviceID": "10665584STKP____"
+    }
+  ],
+  "generatedAt": "2026-11-13T20:52:51.5945099+00:00",
+  "locationName": "Stockport",
+  "crs": "SPT",
+  "filterLocationName": "Manchester Piccadilly",
+  "filtercrs": "MAN",
+  "filterType": "to",
+  "nrccMessages": [
+    {
+      "Value": "Trains at Exeter St Davids will be cancelled, delayed by up to&nbsp;25 minutes or revised. More details can be found in the Disruptions area of the<a href=\"https://www.nationalrail.co.uk/service-disruptions/exeter-st-davids-20261113/\"> National Rail website.</a>"
+    }
+  ],
+  "platformAvailable": true,
+  "areServicesAvailable": true,
+  "Xmlns": {
+    "Count": 8
+  }
+}
