@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { normaliseBoard, findService, parseEstimate, stripHtml, fetchBoard, DarwinError } from "../lib/darwin.js";
 
-const load = (name) => JSON.parse(readFileSync(new URL(`./fixtures/${name}`, import.meta.url), "utf8"));
+const load = (name) => JSON.parse(readFileSync(new URL(`../fixtures/${name}`, import.meta.url), "utf8"));
 const iso = (d) => d?.toISOString() ?? null;
 
 // Real board captured 2026-11-13 21:07 UTC, Bolton -> Manchester Oxford Road.
@@ -79,7 +79,8 @@ test("synthetic: cancelled only at the destination (terminates short)", () => {
     mco.et = "Cancelled";
   });
   const s = findService(normaliseBoard(raw, "MCO"), new Date("2026-11-13T21:21:00Z"));
-  assert.equal(s.cancelled, true);
+  assert.equal(s.cancelled, false); // the train still runs...
+  assert.equal(s.cancelledAtDestination, true); // ...but not to Oxford Road
   assert.equal(s.arrival.cancelled, true);
   assert.equal(s.arrival.estimate.kind, "cancelled");
 });

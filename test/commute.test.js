@@ -2,36 +2,16 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { checkCommute } from "../lib/commute.js";
-import { summariseForecast } from "../lib/metoffice.js";
 import { DarwinError } from "../lib/darwin.js";
 import { MetOfficeError } from "../lib/metoffice.js";
+import { syntheticForecast as forecastFrom } from "../fixtures/synthetic-forecast.js";
 
 const stations = {
   BON: { name: "Bolton", lat: 53.57414, lon: -2.42582 },
   MCO: { name: "Manchester Oxford Road", lat: 53.47403, lon: -2.242 },
 };
 // Real board, captured 2026-11-13 21:07 UTC.
-const liveBoard = JSON.parse(readFileSync(new URL("./fixtures/darwin-BON-MCO-live.json", import.meta.url), "utf8"));
-
-/** Synthetic hourly forecast covering 48h from `start`, with optional per-hour overrides. */
-function forecastFrom(start, overrides = {}) {
-  const t0 = new Date(start).getTime();
-  return summariseForecast({
-    features: [{
-      properties: {
-        location: { name: "Test point" }, requestPointDistance: 500, modelRunDate: new Date(t0).toISOString(),
-        timeSeries: Array.from({ length: 49 }, (_, i) => {
-          const time = new Date(t0 + i * 3_600_000).toISOString().replace(":00.000Z", "Z");
-          return {
-            time, screenTemperature: 5, feelsLikeTemperature: 2, windGustSpeed10m: 5, visibility: 15000,
-            significantWeatherCode: 7, precipitationRate: 0, totalPrecipAmount: 0, totalSnowAmount: 0,
-            probOfPrecipitation: 5, ...overrides[time],
-          };
-        }),
-      },
-    }],
-  });
-}
+const liveBoard = JSON.parse(readFileSync(new URL("../fixtures/darwin-BON-MCO-live.json", import.meta.url), "utf8"));
 
 function clients({ board = liveBoard, forecast, boardError, forecastError } = {}) {
   const calls = { board: 0, forecast: 0 };

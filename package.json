@@ -9,5 +9,8 @@
     "test": "node --test",
     "probe:metoffice": "node --env-file=.env.local scripts/probe-metoffice.mjs",
     "probe:darwin": "node --env-file=.env.local scripts/probe-darwin.mjs"
+  },
+  "dependencies": {
+    "@vercel/functions": "^3.11.2"
   }
 }

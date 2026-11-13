@@ -1,4 +1,4 @@
-// Builds data/stations.json (CRS -> name, lat, lon) from NaPTAN.
+// Builds public/stations.json (CRS -> name, lat, lon) from NaPTAN.
 // Usage: node scripts/build-stations.mjs <path-to-naptan-910.xml>
 // Download: https://naptan.api.dft.gov.uk/v1/access-nodes?atcoAreaCodes=910&dataFormat=xml
 // (area 910 = National Rail). The CSV export has no CRS codes, so we use the XML.
@@ -30,6 +30,6 @@ for (const [block] of xml.matchAll(/<StopPoint\b[\s\S]*?<\/StopPoint>/g)) {
 }
 
 const sorted = Object.fromEntries(Object.entries(stations).sort(([a], [b]) => a.localeCompare(b)));
-await writeFile("data/stations.json", JSON.stringify(sorted, null, 0).replace(/},/g, "},\n") + "\n");
+await writeFile("public/stations.json", JSON.stringify(sorted, null, 0).replace(/},/g, "},\n") + "\n");
 console.log(`Wrote ${Object.keys(sorted).length} stations; skipped ${skipped.length} without CRS/coordinates`);
 if (skipped.length) console.log("Skipped:", skipped.slice(0, 20).join(", "), skipped.length > 20 ? "..." : "");
