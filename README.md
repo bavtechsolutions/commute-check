@@ -68,14 +68,17 @@ The adapter (`lib/commute.js`) bridges them:
 
 ## Running it locally
 
-Requires **Node.js 24+**. No framework and no build step. The only dependency is
+Requires **Node.js 24+**. No framework and no build step. The only runtime dependency is
 `@vercel/functions` (Runtime Cache).
 
 ```bash
-npm install
-cp .env.example .env.local   # then fill in the three values
+npm ci
+cp .env.example .env.local   # Windows: copy .env.example .env.local, then fill in the three values
 npm run dev                  # http://localhost:3000
 ```
+
+Without keys, the scenarios page still works fully, and the live check returns a clear
+`503` naming the missing settings.
 
 Keys (both free):
 
@@ -100,19 +103,35 @@ Raw responses are saved to `probe-output/` (git-ignored).
 ## Tests
 
 ```bash
-npm test
+npm test          # 51 tests, Node's built-in runner
+npm run typecheck # strict TypeScript check of the JSDoc-typed JavaScript (no build step)
 ```
 
-Uses Node's built-in test runner, with no extra dependencies. 47 tests cover:
+The tests cover:
 
 - **Time:** BST/GMT both ways, the night before a clock change, midnight boards, `*` suffix.
 - **Darwin:** parsing a **real captured board**, plus edge cases built by modifying it:
-  cancelled, terminates short, "Delayed" with no time, replacement bus, both error shapes.
-- **Met Office:** forecast-hour alignment, unit conversion, heads-up thresholds, 429 → quota.
-  Uses a **synthetic** forecast (see Licensing).
+  cancelled, terminates short, "Delayed" with no time, replacement bus, both error shapes,
+  timeouts, a 200 that isn't JSON.
+- **Met Office:** forecast-hour alignment, unit conversion, heads-up thresholds, 429 → quota,
+  timeouts. Uses a **synthetic** forecast (see Licensing).
 - **Adapter:** night-before vs live, not on the board, already departed, each API failing on
   its own, journeys over midnight.
-- **Endpoints:** input validation, and a check that the live path never imports simulated data.
+- **Endpoints:** input validation, missing configuration (names reported, never values), and a
+  check that the live path never imports simulated data.
+
+## Security and API handling
+
+- **Keys are server-side only:** environment variables, sent as request headers (never in
+  URLs), never logged or returned. A test checks the Met Office key isn't in the URL.
+- **Input is validated** against the station list and `HH:MM` before any upstream call, so the
+  endpoint can't be used as an open relay to either API.
+- **Upstream calls time out after 8 s**, covering the body as well as the headers. Upstream
+  error text is logged server-side, and only an error *kind* reaches the browser.
+- **All rendered values are HTML-escaped.** Darwin's station messages have their HTML removed.
+- **Headers:** `nosniff`, `Referrer-Policy`, `frame-ancestors 'none'`, `Permissions-Policy`.
+- **No real Met Office data in responses or the repo** (see Licensing).
+- `npm audit`: 0 vulnerabilities. The only runtime dependency is `@vercel/functions`.
 
 ## Live vs simulated data
 
@@ -160,6 +179,15 @@ Met Office limit reached, Darwin unavailable.
 - **BST:** whether Darwin's `generatedAt` carries `+01:00` in summer isn't confirmed yet. The
   code reads the offset rather than assuming one.
 
+### Not verifiable, so not claimed
+
+- **Met Office call counts.** The DataHub account shows the plan (360 calls/day) but no usage
+  figures. That Runtime Cache saves calls is verified from our side only, through the
+  `x-forecast-cache` header.
+- **What the Met Office returns at the daily limit.** The DataHub FAQ says `429`. We haven't
+  used up the allowance to confirm it, and the handling is tested with a simulated 429.
+- **Darwin's fair-use limit** for this product isn't published on a page we could access.
+
 ## What I'd harden for production
 
 - An atomic quota store (e.g. Redis `INCR` with expiry) and Vercel Firewall rate limiting
@@ -171,6 +199,8 @@ Met Office limit reached, Darwin unavailable.
 - Investigate Darwin's `rsid` as a more stable train identifier than scheduled time.
 - Monitoring on both upstream error rates, and alerts on schema changes (Darwin's JSON is a
   mechanical conversion of SOAP and could change shape).
+- A full Content Security Policy (move the pages' inline module scripts into files first),
+  and one retry with backoff for upstream `5xx` errors and timeouts.
 
 ## Project structure
 

@@ -36,3 +36,18 @@ in real responses unless it is marked **unverified**.
 - No rate-limit headers (`cache-control: public,no-cache`). **Unverified:** the fair-use limit on the RDM product page.
 - No station coordinates in the response, confirmed. We still need the NaPTAN lookup.
 - **Not yet seen:** a cancelled service (`isCancelled: true`, `etd: "Cancelled"`), `"Delayed"` with no time, a bus replacement, or a `*` suffix. We need to see these before trusting the parser.
+
+## After deployment (2026-11-14, Vercel, region lhr1)
+
+- **Runtime Cache works on Vercel.** Seen via our `x-forecast-cache` header: `runtime-cache`
+  (not the in-memory fallback `getCache()` silently uses when Runtime Cache is unavailable),
+  and forecasts were still hits after two redeploys, as Vercel's docs describe.
+- **The DataHub account shows no usage figures**, only the plan (360/day). So the effect on
+  the Met Office quota can't be confirmed from their side.
+- **CDN cache:** identical requests go `MISS` then `HIT`. Different query strings are separate
+  cache entries.
+- **Live check on production** found a display bug the tests didn't catch: the departure was
+  labelled "live estimate" but still showed the saved time. Fixed, and the test now checks both.
+- **`commute-check.vercel.app` is an unrelated site.** Ours got `commute-check-wine.vercel.app`.
+- **Node version:** Vercel maps open ranges like `>=24` to its newest major (26.x), so `engines`
+  is pinned to `24.x`, the version the tests run on.
