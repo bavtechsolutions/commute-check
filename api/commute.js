@@ -13,11 +13,12 @@ export default {
     if (!parsed.ok) return json({ error: parsed.error }, 400);
 
     try {
+      const clients = liveClients();
       const result = await checkCommute({
         ...parsed.value,
         now: new Date(),
         stations: STATIONS,
-        clients: liveClients(),
+        clients,
         source: "live",
       });
       // 60s at the CDN: fresh enough for live trains, and repeat requests for
@@ -25,6 +26,8 @@ export default {
       return json(result, 200, {
         "cache-control": "public, max-age=0",
         "vercel-cdn-cache-control": "max-age=60",
+        // e.g. "runtime-cache; BON=hit; MCO=miss", so caching can be verified per request
+        "x-forecast-cache": [clients.stats.backend, ...Object.entries(clients.stats.forecast).map(([k, v]) => `${k}=${v}`)].join("; "),
       });
     } catch (err) {
       console.error("commute failed", err);
