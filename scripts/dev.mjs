@@ -3,7 +3,7 @@
 // Usage: npm run dev   (reads keys from .env.local)
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
-import { join, normalize, extname } from "node:path";
+import { join, normalize, extname, sep } from "node:path";
 import commute from "../api/commute.js";
 import demo from "../api/demo.js";
 
@@ -23,7 +23,8 @@ createServer(async (req, res) => {
       return;
     }
     const path = normalize(join(ROOT, url.pathname === "/" ? "index.html" : url.pathname));
-    if (!path.startsWith(ROOT)) throw Object.assign(new Error("forbidden"), { code: "ENOENT" });
+    // Must be inside public/ itself, not just share its prefix (e.g. "public-x").
+    if (!path.startsWith(ROOT + sep)) throw Object.assign(new Error("forbidden"), { code: "ENOENT" });
     const body = await readFile(path);
     res.writeHead(200, { "content-type": TYPES[extname(path)] ?? "application/octet-stream" });
     res.end(body);

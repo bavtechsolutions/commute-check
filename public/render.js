@@ -56,9 +56,8 @@ function trainCard(r) {
 
 function weatherBlock(w, stationName, basisKey) {
   const c = w.conditions;
-  const where = w.forecastPoint
-    ? `<p class="muted small">Forecast point: ${esc(w.forecastPoint.name)}, ${(w.forecastPoint.distanceMetres / 1000).toFixed(1)} km from the station</p>`
-    : "";
+  const km = Number.isFinite(w.forecastPoint?.distanceMetres) ? `, ${(w.forecastPoint.distanceMetres / 1000).toFixed(1)} km from the station` : "";
+  const where = w.forecastPoint ? `<p class="muted small">Forecast point: ${esc(w.forecastPoint.name)}${km}</p>` : "";
   if (!c) return `<div><h2>${esc(stationName)} at ${esc(w.local)}${basis(basisKey)}</h2><p class="muted">${esc(w.message)}</p></div>`;
   return `<div>
     <h2>${esc(stationName)} at ${esc(w.local)}${basis(basisKey)}</h2>
