@@ -8,8 +8,8 @@ Built for a technical challenge about connecting two APIs that were never design
 together. The interesting part is the seam between them, so most of this README is about
 that.
 
-- **Live demo:** _added after deployment_
-- **Test scenarios (simulated data):** `/scenarios.html` on the demo
+- **Live demo:** https://commute-check-wine.vercel.app/
+- **Test scenarios (simulated data):** https://commute-check-wine.vercel.app/scenarios.html
 
 ## What it does
 
