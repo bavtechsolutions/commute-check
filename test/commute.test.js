@@ -51,6 +51,7 @@ test("within two hours: live train found, arrival from the timetable, weather at
   assert.equal(r.train.expectedDeparture, "21:25");
   assert.equal(r.train.expectedArrival, "On time");
   assert.equal(r.journey.departure.basis, "live estimate");
+  assert.equal(r.journey.departure.local, "21:25"); // the time must match its label, not stay at the saved 21:21
   assert.equal(r.journey.arrival.basis, "timetable"); // "On time" gives no time, so we use the scheduled one
   assert.equal(r.weather.departure.local, "21:25");
   assert.equal(r.weather.arrival.local, "21:41");
