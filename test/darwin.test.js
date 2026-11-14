@@ -138,3 +138,19 @@ test("fetchBoard: strips the operation from the Specification-tab URL", async ()
   assert.match(called, /^https:\/\/example\.test\/LDBWS\/api\/20220120\/GetDepBoardWithDetails\/BON\?/);
   assert.match(called, /filterCrs=MCO/);
 });
+
+const hang = async (_url, init) => new Promise((_, reject) => init.signal.addEventListener("abort", () => reject(init.signal.reason)));
+
+test("fetchBoard: a hung upstream times out instead of hanging", async () => {
+  await assert.rejects(
+    fetchBoard({ ...opts, fetch: hang, timeoutMs: 50 }),
+    (e) => e instanceof DarwinError && e.kind === "unavailable" && /timed out after 50ms/.test(e.message),
+  );
+});
+
+test("fetchBoard: a 200 that isn't JSON is 'unavailable', not a crash", async () => {
+  await assert.rejects(
+    fetchBoard({ ...opts, fetch: async () => new Response("<html>gateway</html>", { status: 200 }) }),
+    (e) => e instanceof DarwinError && e.kind === "unavailable",
+  );
+});

@@ -50,3 +50,18 @@ test("the live endpoint never imports simulated data", () => {
     for (const path of imports) assert.doesNotMatch(path, /fixtures|demo/, `${file} imports ${path}`);
   }
 });
+
+test("live endpoint without keys: 503 naming the missing settings (never values)", async () => {
+  const saved = {};
+  for (const k of ["METOFFICE_API_KEY", "RDM_LDB_API_KEY", "RDM_LDB_BASE_URL"]) { saved[k] = process.env[k]; delete process.env[k]; }
+  process.env.RDM_LDB_API_KEY = "set-but-secret-value";
+  try {
+    const res = await get(commute, "from=BON&to=MCO&depart=07:22&arrive=07:45");
+    assert.equal(res.status, 503);
+    const { error } = await res.json();
+    assert.match(error, /missing METOFFICE_API_KEY, RDM_LDB_BASE_URL/);
+    assert.doesNotMatch(error, /RDM_LDB_API_KEY|set-but-secret-value/);
+  } finally {
+    for (const [k, v] of Object.entries(saved)) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
+  }
+});

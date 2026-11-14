@@ -108,3 +108,11 @@ test("fetchForecast: sends the key as an 'apikey' header, never in the URL", asy
   assert.equal(seen.init.headers.apikey, "secret");
   assert.doesNotMatch(seen.url, /secret/);
 });
+
+test("fetchForecast: a hung upstream times out instead of hanging", async () => {
+  const hang = async (_url, init) => new Promise((_, reject) => init.signal.addEventListener("abort", () => reject(init.signal.reason)));
+  await assert.rejects(
+    fetchForecast({ lat: 1, lon: 1, apiKey: "k", fetch: hang, timeoutMs: 50 }),
+    (e) => e instanceof MetOfficeError && e.kind === "unavailable" && /timed out after 50ms/.test(e.message),
+  );
+});

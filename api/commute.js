@@ -2,7 +2,7 @@
 // GET /api/commute?from=BON&to=MCO&depart=07:22&arrive=07:45
 // LIVE data only. This file never imports fixtures; simulated data is /api/demo.
 import { checkCommute } from "../lib/commute.js";
-import { liveClients } from "../lib/live-clients.js";
+import { liveClients, missingConfig } from "../lib/live-clients.js";
 import { parseJourney, json, STATIONS } from "../lib/request.js";
 
 export default {
@@ -11,6 +11,13 @@ export default {
     if (request.method !== "GET") return json({ error: "Method not allowed" }, 405);
     const parsed = parseJourney(new URL(request.url).searchParams);
     if (!parsed.ok) return json({ error: parsed.error }, 400);
+
+    // Say so plainly rather than returning "couldn't be loaded" for every API.
+    const missing = missingConfig();
+    if (missing.length) {
+      console.error(`Missing environment variables: ${missing.join(", ")}`);
+      return json({ error: `This server isn't configured: missing ${missing.join(", ")}. See the README section "Running it locally".` }, 503);
+    }
 
     try {
       const clients = liveClients();
