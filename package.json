@@ -9,9 +9,14 @@
     "test": "node --test",
     "dev": "node --env-file-if-exists=.env.local scripts/dev.mjs",
     "probe:metoffice": "node --env-file=.env.local scripts/probe-metoffice.mjs",
-    "probe:darwin": "node --env-file=.env.local scripts/probe-darwin.mjs"
+    "probe:darwin": "node --env-file=.env.local scripts/probe-darwin.mjs",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "@vercel/functions": "^3.11.2"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "typescript": "5.9.3"
   }
 }

@@ -21,7 +21,7 @@ function board(patch = () => {}) {
   patch(b);
   return b;
 }
-const first = (b) => b.trainServices[0];
+const first = (/** @type {any} */ b) => b.trainServices[0];
 
 /**
  * @typedef {{ title: string, description: string, journey: typeof LIVE_JOURNEY, now: Date,
@@ -64,7 +64,7 @@ export const SCENARIOS = {
     now: CAPTURED_AT,
     getBoard: async () => board((b) => {
       first(b).filterLocationCancelled = true;
-      const mco = first(b).subsequentCallingPoints[0].callingPoint.find((c) => c.crs === "MCO");
+      const mco = first(b).subsequentCallingPoints[0].callingPoint.find((/** @type {any} */ c) => c.crs === "MCO");
       Object.assign(mco, { isCancelled: true, et: "Cancelled" });
     }),
     getForecast: async () => dryEvening,
