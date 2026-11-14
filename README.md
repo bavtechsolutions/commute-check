@@ -131,6 +131,11 @@ Met Office limit reached, Darwin unavailable.
   is shared.
 - **Whole response:** cached at Vercel's CDN for 60 s, so repeat checks of the same journey
   don't call either API.
+- **You can check it per request.** `/api/commute` responses carry
+  `x-forecast-cache: runtime-cache; BON=hit; MCO=hit` (which cache backend was used, and
+  hit/miss per station) alongside Vercel's `x-vercel-cache`. `getCache()` silently falls back
+  to a per-instance in-memory cache when Runtime Cache isn't available, so the header reports
+  which one actually ran. On production, forecasts were still hits after two redeploys.
 - **These caches save calls but don't guarantee anything.** Vercel describes both as regional
   and best-effort, and entries can be evicted early. So there's no "daily budget counter":
   without an atomic store it would look like protection without working reliably. Running out
